@@ -93,6 +93,8 @@ enum Classes {
 	WINDOW_BORDER = 'border'
 }
 
+
+
 export abstract class Layout extends Disposable implements IWorkbenchLayoutService {
 
 	declare readonly _serviceBrand: undefined;
@@ -200,6 +202,7 @@ export abstract class Layout extends Disposable implements IWorkbenchLayoutServi
 			centered: false,
 			restoreCentered: false,
 			restoreEditors: false,
+			showTitleBar: true,
 			editorsToOpen: [] as Promise<IResourceEditorInputType[]> | IResourceEditorInputType[]
 		},
 
@@ -1108,6 +1111,23 @@ export abstract class Layout extends Disposable implements IWorkbenchLayoutServi
 		// Propagate to grid
 		this.workbenchGrid.setViewVisible(this.statusBarPartView, !hidden);
 	}
+
+	/*
+	setEditorTitleBarVisibility(visibility: boolean, skipLayout: boolean): void {
+		if (this.state.editor.showTitleBar !== visibility) {
+			this.state.editor.showTitleBar = visibility;
+
+			// Layout
+			if (!skipLayout) {
+				if (this.workbenchGrid instanceof Grid) {
+					this.layout();
+				} else {
+					this.workbenchGrid.layout();
+				}
+			}
+		}
+	}
+	*/
 
 	protected createWorkbenchLayout(): void {
 		const titleBar = this.getPart(Parts.TITLEBAR_PART);

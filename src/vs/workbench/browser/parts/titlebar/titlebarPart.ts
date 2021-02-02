@@ -45,7 +45,7 @@ import { Codicon, iconRegistry } from 'vs/base/common/codicons';
 
 export class TitlebarPart extends Part implements ITitleService {
 
-	private static readonly NLS_UNSUPPORTED = localize('patchedWindowTitle', "[Unsupported]");
+	private static readonly NLS_UNSUPPORTED = '';
 	private static readonly NLS_USER_IS_ADMIN = isWindows ? localize('userIsAdmin', "[Administrator]") : localize('userIsSudo', "[Superuser]");
 	private static readonly NLS_EXTENSION_HOST = localize('devExtensionWindowTitlePrefix', "[Extension Development Host]");
 	private static readonly TITLE_DIRTY = '\u25cf ';
@@ -170,6 +170,8 @@ export class TitlebarPart extends Part implements ITitleService {
 
 	private doUpdateTitle(): void {
 		const title = this.getWindowTitle();
+
+
 
 		// Always set the native window title to identify us properly to the OS
 		let nativeTitle = title;

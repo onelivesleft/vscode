@@ -4,6 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import 'vs/css!./media/editorgroupview';
+import { IWorkbenchLayoutService } from 'vs/workbench/services/layout/browser/layoutService';
 import { EditorGroup, IEditorOpenOptions, EditorCloseEvent, ISerializedEditorGroup, isSerializedEditorGroup } from 'vs/workbench/common/editor/editorGroup';
 import { EditorInput, EditorOptions, GroupIdentifier, SideBySideEditorInput, CloseDirection, IEditorCloseEvent, ActiveEditorDirtyContext, IEditorPane, EditorGroupEditorsCountContext, SaveReason, IEditorPartOptionsChangeEvent, EditorsOrder, IVisibleEditorPane, ActiveEditorStickyContext, ActiveEditorPinnedContext, EditorResourceAccessor } from 'vs/workbench/common/editor';
 import { Event, Emitter, Relay } from 'vs/base/common/event';
@@ -53,9 +54,9 @@ import { ILogService } from 'vs/platform/log/common/log';
 import { Codicon } from 'vs/base/common/codicons';
 import { IFilesConfigurationService, AutoSaveMode } from 'vs/workbench/services/filesConfiguration/common/filesConfigurationService';
 
-import { InEditorZenModeContext } from 'vs/workbench/common/editor';
 
 export class EditorGroupView extends Themable implements IEditorGroupView {
+
 
 	//#region factory
 
@@ -141,6 +142,7 @@ export class EditorGroupView extends Themable implements IEditorGroupView {
 		@IFileDialogService private readonly fileDialogService: IFileDialogService,
 		@ILogService private readonly logService: ILogService,
 		@IEditorService private readonly editorService: EditorServiceImpl,
+		@IWorkbenchLayoutService private readonly layoutService: IWorkbenchLayoutService,
 		@IFilesConfigurationService private readonly filesConfigurationService: IFilesConfigurationService
 	) {
 		super(themeService);
@@ -419,8 +421,18 @@ export class EditorGroupView extends Themable implements IEditorGroupView {
 		this.updateStyles();
 	}
 
+
+	private inZenMode = false;
+
+	onZenModeChanged(enabled: boolean) {
+		this.inZenMode = enabled;
+		this.titleContainer.classList.toggle('zenModeTitle', enabled);
+	}
+
+
 	private updateTitleContainer(): void {
-		this.titleContainer.classList.toggle('editorTitle', InEditorZenModeContext.getValue(this.scopedContextKeyService));
+		//console.log("Zen Mode: " + InEditorZenModeContext.getValue(this.scopedContextKeyService));
+		//this.titleContainer.classList.toggle('zenModeTitle', InEditorZenModeContext.getValue(this.scopedContextKeyService));
 		this.titleContainer.classList.toggle('tabs', this.accessor.partOptions.showTabs);
 		this.titleContainer.classList.toggle('show-file-icons', this.accessor.partOptions.showIcons);
 	}
@@ -491,12 +503,14 @@ export class EditorGroupView extends Themable implements IEditorGroupView {
 		this._register(this._group.onDidDisposeEditor(editor => this.onDidDisposeEditor(editor)));
 		this._register(this._group.onDidChangeEditorDirty(editor => this.onDidChangeEditorDirty(editor)));
 		this._register(this._group.onDidEditorLabelChange(editor => this.onDidEditorLabelChange(editor)));
-
 		// Option Changes
 		this._register(this.accessor.onDidEditorPartOptionsChange(e => this.onDidEditorPartOptionsChange(e)));
 
 		// Visibility
 		this._register(this.accessor.onDidVisibilityChange(e => this.onDidVisibilityChange(e)));
+
+		// Zen mode hide title bar
+		this._register(this.layoutService.onZenModeChange(enabled => this.onZenModeChanged(enabled)));
 	}
 
 	private onDidChangeEditorPinned(editor: EditorInput): void {
@@ -1714,7 +1728,7 @@ export class EditorGroupView extends Themable implements IEditorGroupView {
 		});
 
 		// Pass the container width and remaining height to the editor layout
-		const editorHeight = Math.max(0, height - titleAreaSize.height);
+		const editorHeight = Math.max(0, this.inZenMode ? height : height - titleAreaSize.height);
 		this.editorContainer.style.height = `${editorHeight}px`;
 		this.editorControl.layout(new Dimension(width, editorHeight));
 	}
