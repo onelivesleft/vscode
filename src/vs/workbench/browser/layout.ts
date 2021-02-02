@@ -230,6 +230,7 @@ export abstract class Layout extends Disposable implements IWorkbenchLayoutServi
 			transitionedToCenteredEditorLayout: false,
 			wasSideBarVisible: false,
 			wasPanelVisible: false,
+			oldSurroundingLines: 0,
 			transitionDisposables: new DisposableStore(),
 			setNotificationsFilter: false,
 			editorWidgetSet: new Set<IEditor>()
@@ -1002,6 +1003,8 @@ export abstract class Layout extends Disposable implements IWorkbenchLayoutServi
 			toggleFullScreen = !this.state.fullscreen && config.fullScreen;
 
 			this.state.zenMode.transitionedToFullScreen = restoring ? config.fullScreen : toggleFullScreen;
+			this.state.zenMode.oldSurroundingLines = this.configurationService.getValue('editor.cursorSurroundingLines');
+			this.configurationService.updateValue('editor.cursorSurroundingLines', 9999);
 			this.state.zenMode.transitionedToCenteredEditorLayout = !this.isEditorLayoutCentered() && config.centerLayout;
 			this.state.zenMode.wasSideBarVisible = this.isVisible(Parts.SIDEBAR_PART);
 			this.state.zenMode.wasPanelVisible = this.isVisible(Parts.PANEL_PART);
@@ -1058,6 +1061,8 @@ export abstract class Layout extends Disposable implements IWorkbenchLayoutServi
 			}
 
 			setLineNumbers();
+
+			this.configurationService.updateValue('editor.cursorSurroundingLines', this.state.zenMode.oldSurroundingLines);
 
 			// Status bar and activity bar visibility come from settings -> update their visibility.
 			this.doUpdateLayoutConfiguration(true);
