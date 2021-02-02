@@ -53,6 +53,8 @@ import { ILogService } from 'vs/platform/log/common/log';
 import { Codicon } from 'vs/base/common/codicons';
 import { IFilesConfigurationService, AutoSaveMode } from 'vs/workbench/services/filesConfiguration/common/filesConfigurationService';
 
+import { InEditorZenModeContext } from 'vs/workbench/common/editor';
+
 export class EditorGroupView extends Themable implements IEditorGroupView {
 
 	//#region factory
@@ -418,6 +420,7 @@ export class EditorGroupView extends Themable implements IEditorGroupView {
 	}
 
 	private updateTitleContainer(): void {
+		this.titleContainer.classList.toggle('editorTitle', InEditorZenModeContext.getValue(this.scopedContextKeyService));
 		this.titleContainer.classList.toggle('tabs', this.accessor.partOptions.showTabs);
 		this.titleContainer.classList.toggle('show-file-icons', this.accessor.partOptions.showIcons);
 	}
