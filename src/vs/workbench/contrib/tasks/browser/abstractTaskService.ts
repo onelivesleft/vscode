@@ -1539,19 +1539,20 @@ export abstract class AbstractTaskService extends Disposable implements ITaskSer
 			let active = executeResult.active;
 			if (active && active.same) {
 				if (this._taskSystem?.isTaskVisible(executeResult.task)) {
-					const message = nls.localize('TaskSystem.activeSame.noBackground', 'The task \'{0}\' is already active.', executeResult.task.getQualifiedLabel());
+					//const message = nls.localize('TaskSystem.activeSame.noBackground', 'The task \'{0}\' is already active.', executeResult.task.getQualifiedLabel());
 					let lastInstance = this.getTaskSystem().getLastInstance(executeResult.task) ?? executeResult.task;
-					this.notificationService.prompt(Severity.Warning, message,
-						[{
-							label: nls.localize('terminateTask', "Terminate Task"),
-							run: () => this.terminate(lastInstance)
-						},
-						{
-							label: nls.localize('restartTask', "Restart Task"),
-							run: () => this.restart(lastInstance)
-						}],
-						{ sticky: true }
-					);
+					this.restart(lastInstance);
+					//this.notificationService.prompt(Severity.Warning, message,
+					//	[{
+					//		label: nls.localize('terminateTask', "Terminate Task"),
+					//		run: () => this.terminate(lastInstance)
+					//	},
+					//	{
+					//		label: nls.localize('restartTask', "Restart Task"),
+					//		run: () => this.restart(lastInstance)
+					//	}],
+					//	{ sticky: true }
+					//);
 				} else {
 					this._taskSystem?.revealTask(executeResult.task);
 				}

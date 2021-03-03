@@ -1,4 +1,4 @@
 @echo off
-echo Hope you remembered to update code.bat with production settings!
+echo Remember to run build-post.bat after to enable extensions!
+copy /Y c:\repos\vscode\scripts\code-for-release.bat c:\repos\vscode\scripts\code.bat
 npm run gulp -- vscode-win32-x64
-copy /Y c:\repos\vscode\productms.json C:\Repos\VSCode-win32-x64\resources\app\product.json
