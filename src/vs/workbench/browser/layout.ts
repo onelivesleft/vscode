@@ -1009,6 +1009,7 @@ export abstract class Layout extends Disposable implements IWorkbenchLayoutServi
 			this.configurationService.updateValue('editor.cursorSurroundingLines', 9999);
 			this.configurationService.updateValue('editor.occurrencesHighlight', false);
 			this.configurationService.updateValue('editor.renderLineHighlight', 'none');
+			this.configurationService.updateValue('editor.scrollbar.verticalScrollbarSize', 0);
 
 
 			this.setPanelHidden(true, true);
@@ -1067,6 +1068,7 @@ export abstract class Layout extends Disposable implements IWorkbenchLayoutServi
 			this.configurationService.updateValue('editor.cursorSurroundingLines', 0);
 			this.configurationService.updateValue('editor.occurrencesHighlight', true);
 			this.configurationService.updateValue('editor.renderLineHighlight', 'line');
+			this.configurationService.updateValue('editor.scrollbar.verticalScrollbarSize', false);
 
 			// Status bar and activity bar visibility come from settings -> update their visibility.
 			this.doUpdateLayoutConfiguration(true);

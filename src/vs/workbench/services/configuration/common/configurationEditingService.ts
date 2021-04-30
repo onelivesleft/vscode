@@ -469,9 +469,11 @@ export class ConfigurationEditingService {
 
 		// Any key must be a known setting from the registry (unless this is a standalone config)
 		if (!operation.workspaceStandAloneConfigurationKey) {
-			const validKeys = this.configurationService.keys().default;
-			if (validKeys.indexOf(operation.key) < 0 && !OVERRIDE_PROPERTY_PATTERN.test(operation.key)) {
-				return this.reject(ConfigurationEditingErrorCode.ERROR_UNKNOWN_KEY, target, operation);
+			if (operation.key !== 'editor.scrollbar.verticalScrollbarSize') {
+				const validKeys = this.configurationService.keys().default;
+				if (validKeys.indexOf(operation.key) < 0 && !OVERRIDE_PROPERTY_PATTERN.test(operation.key)) {
+					return this.reject(ConfigurationEditingErrorCode.ERROR_UNKNOWN_KEY, target, operation);
+				}
 			}
 		}
 

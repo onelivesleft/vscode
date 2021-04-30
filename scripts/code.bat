@@ -17,11 +17,11 @@ set CODE=".build\electron\%NAMESHORT%"
 if "%1"=="--builtin" goto builtin
 
 :: Configuration
-set NODE_ENV=development
-set VSCODE_DEV=1
-set VSCODE_CLI=1
-set ELECTRON_ENABLE_LOGGING=1
-set ELECTRON_ENABLE_STACK_DUMPING=1
+set NODE_ENV=production
+set VSCODE_DEV=0
+set VSCODE_CLI=0
+set ELECTRON_ENABLE_LOGGING=0
+set ELECTRON_ENABLE_STACK_DUMPING=0
 
 :: Launch Code
 

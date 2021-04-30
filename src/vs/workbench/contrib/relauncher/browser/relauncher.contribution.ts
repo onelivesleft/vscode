@@ -94,6 +94,7 @@ export class SettingsChangeRelauncher extends Disposable implements IWorkbenchCo
 
 		// Notify only when changed and we are the focused window (avoids notification spam across windows)
 		if (notify && changed) {
+			if (notify) { return; }
 			this.doConfirm(
 				isNative ?
 					localize('relaunchSettingMessage', "A setting has changed that requires a restart to take effect.") :
